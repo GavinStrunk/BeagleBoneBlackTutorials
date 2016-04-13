@@ -1,0 +1,3 @@
+[submodule "BeagleBoneBlackLibrary"]
+	path = BeagleBoneBlackLibrary
+	url = https://github.com/GavinStrunk/BeagleBoneBlackLibrary
