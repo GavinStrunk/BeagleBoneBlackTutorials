@@ -1,0 +1,53 @@
+/dts-v1/;
+/plugin/;
+
+/{
+   compatible = "ti,beaglebone-black";
+
+   part-number = "BBB_SPI0";
+
+   version = "00A0";
+
+   //state the resources this uses
+   exclusive-use = 
+	"P9.22",
+	"P9.21",
+	"P9.18",
+	"P9.17",
+	"spi0";
+
+   fragment@0{
+	target = <&am33xx_pinmux>;
+	__overlay__ {
+	   pinctrl_spi0: pinctrl_spi0_pins {
+		pinctrl-single,pins= <
+		   0x150  0x10	//spi0_sclk P9_22
+		   0x154  0x30	//spi0_do   P9_21
+		   0x158  0x10	//spi0_di   P9_18
+		   0x15C  0x10	//spi0_cso  P9_17
+		>;
+	   };
+	};
+   };
+
+   fragment@1 {
+	target = <&spi0>;
+	__overlay__ {
+	   #address-cells = <1>;
+	   #size-cells    = <0>;
+	   status         = "okay";
+	   pinctrl-names  = "default";
+	   pinctrl-0      = <&pinctrl_spi0>;
+	   cs-gpios       = <&gpio1 5 0>;   //bank+1 io# 0
+
+	spi0_0{
+	   #address-cells = <1>;
+	   #size-cells    = <0>;
+	   compatible     = "spidev";
+	   reg            = <0>;
+	   spi-max-frequency = <16000000>;
+	   spi-cpha;
+	};
+       };
+   };
+};
